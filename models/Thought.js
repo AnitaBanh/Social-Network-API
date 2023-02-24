@@ -1,4 +1,6 @@
 const {Schema, model} = require('mongoose');
+const reactionSchema = require('../models/Reaction');
+const userSchema = require('../models/User');
 
 const thoughtSchema = new Schema(
 {
@@ -14,10 +16,11 @@ const thoughtSchema = new Schema(
         //   * Use a getter method to format the timestamp on query
         get: (timestamp) => dateFormat(timestamp),
     }, 
-    username: {
-        type: String,
-        required: true,
-    },
+    username: userSchema,
+    // {
+    //     type: String,
+    //     required: true,
+    // },
     //   * Array of nested documents created with the `reactionSchema`
     reactions: [reactionSchema],
 },
