@@ -1,4 +1,4 @@
-const {Schema, Types} = require('mongoose');
+const {Schema, model} = require('mongoose');
 
 const thoughtSchema = new Schema(
 {
@@ -38,35 +38,6 @@ thoughtSchema.virtual('reactionCount')
 .get(function (){
     return this.thought.length;
 });
-
-const reactionSchema = new Schema(
-    {
-        reactionId: {
-            type: mongoose.ObjectId,
-            default: mongoose.Types.ObjectId,
-        },
-        reactionBody: {
-            type: String,
-            required: true,
-            maxlength: 280,
-        },
-        username: {
-            type: String,
-            required: true,
-        },
-        createdAt: {
-            type: Date,
-            default: Date.now,
-            //   * Use a getter method to format the timestamp on query
-            get: (timestamp) => dateFormat(timestamp),
-        }, 
-    },
-    {
-        toJSON: {
-          getters: true,
-        },
-      }
-)
 
 const Thought = model('thought', thoughtSchema);
 module.exports = Thought;
