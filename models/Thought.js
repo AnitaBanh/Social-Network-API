@@ -1,6 +1,6 @@
 const {Schema, model} = require('mongoose');
 const reactionSchema = require('../models/Reaction');
-const userSchema = require('../models/User');
+// const userSchema = require('../models/User');
 
 const thoughtSchema = new Schema(
 {
@@ -16,7 +16,11 @@ const thoughtSchema = new Schema(
         //   * Use a getter method to format the timestamp on query
         get: (timestamp) => dateFormat(timestamp),
     }, 
-    username: userSchema,
+    username: [{
+      type: String,
+      ref: 'User',
+      required: true,
+    }],
     // {
     //     type: String,
     //     required: true,
@@ -39,7 +43,7 @@ const thoughtSchema = new Schema(
 
 thoughtSchema.virtual('reactionCount')
 .get(function (){
-    return this.thought.length;
+    return this.reactions.length;
 });
 
 const Thought = model('thought', thoughtSchema);

@@ -11,12 +11,14 @@ module.exports = {
   getSingleUser(req, res) {
     User.findOne({ _id: req.params.userId })
       .select("-__v")
-      .populate("thoughts")
-      .populate("friends")
-      .then((user) =>
-        !user
-          ? res.status(404).json({ message: "No user with that ID" })
-          : res.json(user)
+      // .populate("thoughts")
+      // .populate("friends")
+      .then((user) =>{
+        console.log(user)
+        if(!user) res.status(400).send('cannot find userID')
+           res.json(user)
+      }
+      
       )
       .catch((err) => res.status(500).json(err));
   },
@@ -29,10 +31,11 @@ module.exports = {
   // Delete a user and associated apps
   deleteUser(req, res) {
     User.findOneAndDelete({ _id: req.params.userId })
-      .then((user) =>
-        !user
-          ? res.status(404).json({ message: "No user with that ID" })
-          : Thought.deleteMany({ _id: { $in: user.thoughts } })
+      .then((user) => {
+        console.log(user);
+        if(!user) res.status(400).send('no user with this ID')
+      }
+        
       )
       .then(() => res.json({ message: "User deleted!" }))
       .catch((err) => res.status(500).json(err));
