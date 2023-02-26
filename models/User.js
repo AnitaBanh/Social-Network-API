@@ -13,25 +13,23 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      // validate: {
-      //   validator: () => Promise.resolve(false),
-      //   message: "Email validation failed",
-      // },
+      validate: {
+        validator: function(v) {
+          return /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/.test(v);
+        },
+        message: [true, "Email validation failed"]
+      },
     },
-    // password: {
-    //   type: String,
-    //   required: true,
-    // },
     thoughts: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Thought",
+        ref: "thought",
       },
     ],
     friends: [
       {
         type: Schema.Types.ObjectId,
-        ref: "User",
+        ref: "user",
       },
     ],
   },

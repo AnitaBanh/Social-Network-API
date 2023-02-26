@@ -1,9 +1,12 @@
-const { User, Application } = require("../models");
+const { User } = require("../models");
 
 module.exports = {
   // Get all users
   getUsers(req, res) {
     User.find()
+      .select("-__v")
+      .populate("thoughts")
+      .populate("friends")
       .then((users) => res.json(users))
       .catch((err) => res.status(500).json(err));
   },
@@ -11,16 +14,17 @@ module.exports = {
   getSingleUser(req, res) {
     User.findOne({ _id: req.params.userId })
       .select("-__v")
-      // .populate("thoughts")
-      // .populate("friends")
-      .then((user) =>{
-        console.log(user)
-        if(!user) res.status(400).send('cannot find userID')
-           res.json(user)
-      }
-      
-      )
-      .catch((err) => res.status(500).json(err));
+      .populate("thoughts")
+      .populate("friends")
+      .then((user) => {
+        console.log(user);
+        if (!user) res.status(400).send("cannot find userId");
+        res.json(user);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
   },
   // create a new user
   createUser(req, res) {
@@ -30,33 +34,34 @@ module.exports = {
   },
   // Delete a user and associated apps
   deleteUser(req, res) {
-    User.findOneAndDelete({ _id: req.params.userId })
+    User.findOneAndRemove({ _id: req.params.userId })
       .then((user) => {
         console.log(user);
-        if(!user) res.status(400).send('no user with this ID')
-      }
-        
-      )
+        if (!user) res.status(400).send("no user with this ID");
+      })
       .then(() => res.json({ message: "User deleted!" }))
       .catch((err) => res.status(500).json(err));
   },
   //   PUT to update a user by its _id
   updateUser(req, res) {
-    User.findOneAndUpdate({ _id: req.params.userId })
+    User.findOneAndUpdate({ _id: req.params.userId }, { $set: req.body })
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No user with that ID" })
-          : Application.findOneAndUpdate({ _id: { $in: user.applications } })
+          : res.json(user)
       )
-      .then(() => res.json({ message: "User deleted!" }))
-      .catch((err) => res.status(500).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
   },
+
   addFriend(req, res) {
     console.log("Adding an friend");
     console.log(req.body);
     User.findOneAndUpdate(
       { _id: req.params.userId },
-      { $addToSet: { friends: req.body } }
+      { $addToSet: { friends: req.params.friendId } }
     )
       .then((user) =>
         !user
@@ -67,10 +72,11 @@ module.exports = {
   },
   removeFriend(req, res) {
     console.log("Removing an friend");
-    console.log(req.body);
+    console.log("userid", req.params.userId);
+    console.log(req.params.friendId);
     User.findOneAndUpdate(
       { _id: req.params.userId },
-      { $pull: { friends: { friendId: req.params.friendId } } }
+      { $pull: { friends: req.params.friendId } }
     )
       .then((user) =>
         !user

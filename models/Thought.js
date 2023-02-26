@@ -1,6 +1,9 @@
 const {Schema, model} = require('mongoose');
 const reactionSchema = require('../models/Reaction');
 // const userSchema = require('../models/User');
+const dateFormat = require('../utils/dateFormat')
+
+// import dateFormat from "../utils/dateFormat";
 
 const thoughtSchema = new Schema(
 {
@@ -21,10 +24,6 @@ const thoughtSchema = new Schema(
       ref: 'User',
       required: true,
     }],
-    // {
-    //     type: String,
-    //     required: true,
-    // },
     //   * Array of nested documents created with the `reactionSchema`
     reactions: [reactionSchema],
 },
