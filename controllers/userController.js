@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Thought } = require("../models");
 
 module.exports = {
   // Get all users
@@ -32,16 +32,23 @@ module.exports = {
       .then((user) => res.json(user))
       .catch((err) => res.status(500).json(err));
   },
-  // Delete a user and associated apps
+
+  // Delete a user  and thoughts
   deleteUser(req, res) {
     User.findOneAndRemove({ _id: req.params.userId })
       .then((user) => {
-        console.log(user);
-        if (!user) res.status(400).send("no user with this ID");
-      })
+        console.log('userController line 40', user.thoughts);
+        if (!user) {
+         res.status(400).send("no user with this ID");
+      }
+      return Thought.deleteMany({_id: { $in: user.thoughts}});
+    })
       .then(() => res.json({ message: "User deleted!" }))
       .catch((err) => res.status(500).json(err));
   },
+
+
+
   //   PUT to update a user by its _id
   updateUser(req, res) {
     User.findOneAndUpdate({ _id: req.params.userId }, { $set: req.body })

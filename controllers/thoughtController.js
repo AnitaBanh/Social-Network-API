@@ -25,10 +25,8 @@ module.exports = {
   createThought(req, res) {
     Thought.create(req.body)
       .then((thought) => {
-        console.log("pushing", thought);
-        console.log("pushing", req.body);
-
-        return User.findOneAndUpdate({ _id: req.body.userId }, { $push: {thoughts: thought }})
+        // console.log("pushing", thought);
+        return User.findOneAndUpdate({ _id: req.body.userId }, { $push: {thoughts: thought }}, {new: true})
 
         // User.findByIdAndUpdate(thought.user, {$push: {thoughts: thought.id}}, {new: true})
           .then((thought) => {
