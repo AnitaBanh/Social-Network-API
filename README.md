@@ -18,11 +18,16 @@
 
   ## Usage
   This video demonstrates usage and functionality: https://drive.google.com/file/d/1m2O6ZCEMxdtUvSLwlOZgmlQddCo_-Fpc/view
+  
   Run 'npm start' to start local server. Then run API routes in Insomnia. 
+  
   The initial database is empty, so start by creating users and then posting thoughts and reactions to those thougthts. The API also has the functionality to view all users, view a single user, add friends to users, view all thoughts, view a single thought, update users and thoughts, as well as delete users, delete thoughts and delete reactions. Once a user is deleted, that user's associated thoughts are also deleted.
+  
+  ![image](https://user-images.githubusercontent.com/120350675/221433760-70e7df06-14a6-47a5-a91d-5194a15408e0.png)
+
 
   ## License
-  Licensed under the MIT License - see the [LICENSE.md](https://github.com/AnitaBanh/Regex-Tutorial/blob/main/LICENSE) file for details.
+  Licensed under the MIT License - see the [LICENSE.md](https://github.com/AnitaBanh/Social-Network-API/blob/main/LICENSE) file for details.
 
   ## Contributing
   N/A
