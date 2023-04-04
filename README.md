@@ -6,11 +6,10 @@
   It uses Express.js for routing, a MongoDB database, and Mongoose ODM.
 
   ## Table of Contents 
-  - [Installation](##installation)
+  - [Installation](#installation)
   - [Usage](#usage)
   - [License](#license)
   - [Contributing](#contributing)
-  - [Tests](#tests)
   - [Questions](#questions)
 
   ## Installation
@@ -31,9 +30,6 @@
 
   ## Contributing
   N/A
-
-  ## Tests
-  None
 
   ## Questions
   <https://github.com/AnitaBanh>
